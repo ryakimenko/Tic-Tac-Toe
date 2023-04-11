@@ -97,7 +97,6 @@ bool checkForWin(int playerSock)
         return false;
     }
 }
-}
 
 bool isMakeReserve(char const* buff)
 {
