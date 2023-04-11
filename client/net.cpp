@@ -47,6 +47,9 @@ int parseServer(char* buff)
     std::string head(buff, find - buff);
 
     if (head == "OK") {
+        if (find[2] == '1') {
+            return 1;
+        }
         return 0;
     }
     return -1;
@@ -123,24 +126,11 @@ std::optional<std::pair<int, int>> parseStep(char const* buff)
             return std::nullopt;
 
         return std::make_pair(row, col);
+    } else if (head == "OK") {
+        return std::make_pair(-1, -1);
     }
     return std::nullopt;
 }
-
-    int parseMessage(char const* buff)
-    {
-        auto find = strstr(buff, "\r\n");
-        std::string head(buff, find - buff);
-
-        if (head == "Win") {
-            return 1;
-        }
-        else if(head == "Lose")
-        {
-            return 2;
-        }
-        return 0;
-    }
 
 } // namespace
 
@@ -184,20 +174,12 @@ int start(int argc, char** argv)
             }
             auto val = parseStep(buffer);
             if (val) {
+                if (val->first == -1 && val->second == -1) {
+                    return 0;
+                }
                 board.values[val->first][val->second] = isFirst ? 'o' : 'x';
             }
             printBoard();
-            auto gameResult = parseMessage(buffer);
-            if(gameResult == 1)
-            {
-                printf("Win\n");
-                exit(0);
-            }
-            else if(gameResult == 2)
-            {
-                printf("Lose\n");
-                exit(0);
-            }
         }
 
         scanf("%d %d", &row, &col);
@@ -235,11 +217,8 @@ int start(int argc, char** argv)
         printf("Parse server: %ld\n", ret);
         if (ret == 0) {
             board.values[row][col] = isFirst ? 'x' : 'o';
-        }
-        auto gameResult = parseMessage(buffer);
-        if(gameResult > 0)
-        {
-            exit(0);
+        } else if (ret == 1) {
+            return 0;
         }
         printBoard();
 
@@ -255,20 +234,11 @@ int start(int argc, char** argv)
             }
             auto val = parseStep(buffer);
             if (val) {
+                if (val->first == -1 && val->second == -1)
+                    return 0;
                 board.values[val->first][val->second] = isFirst ? 'o' : 'x';
             }
             printBoard();
-            gameResult = parseMessage(buffer);
-            if(gameResult == 1)
-            {
-                printf("Win\n");
-                exit(0);
-            }
-            else if(gameResult == 2)
-            {
-                printf("Lose\n");
-                exit(0);
-            }
         }
     }
 }

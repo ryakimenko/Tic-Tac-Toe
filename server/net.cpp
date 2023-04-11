@@ -25,7 +25,6 @@ struct Board {
     }
 } static board;
 
-
 int firstPlayer = -1;
 int secondPlayer = -1;
 bool firstStep = true;
@@ -42,34 +41,62 @@ struct StepResult {
     { }
 };
 
-    bool checkForWin(int playerSock)
-    {
-        if(playerSock == firstPlayer)
-        {
-            if(board.values[0][0]=='x' && board.values[0][1]=='x' && board.values[0][2]=='x') return true;
-            if(board.values[1][0]=='x' && board.values[1][1]=='x' && board.values[1][2]=='x') return true;
-            if(board.values[2][0]=='x' && board.values[2][1]=='x' && board.values[2][2]=='x') return true;
-            if(board.values[0][0]=='x' && board.values[0][1]=='x' && board.values[0][2]=='x') return true;
-            if(board.values[1][0]=='x' && board.values[1][1]=='x' && board.values[1][2]=='x') return true;
-            if(board.values[2][0]=='x' && board.values[2][1]=='x' && board.values[2][2]=='x') return true;
-            if(board.values[0][2]=='x' && board.values[1][1]=='x' && board.values[2][0]=='x') return true;
-            if(board.values[0][0]=='x' && board.values[1][1]=='x' && board.values[2][2]=='x') return true;
-            return false;
-        }
-        else
-        {
-            if(board.values[0][0]=='0' && board.values[0][1]=='0' && board.values[0][2]=='0') return true;
-            if(board.values[1][0]=='0' && board.values[1][1]=='0' && board.values[1][2]=='0') return true;
-            if(board.values[2][0]=='0' && board.values[2][1]=='0' && board.values[2][2]=='0') return true;
-            if(board.values[0][0]=='0' && board.values[0][1]=='0' && board.values[0][2]=='0') return true;
-            if(board.values[1][0]=='0' && board.values[1][1]=='0' && board.values[1][2]=='0') return true;
-            if(board.values[2][0]=='0' && board.values[2][1]=='0' && board.values[2][2]=='0') return true;
-            if(board.values[0][2]=='0' && board.values[1][1]=='0' && board.values[2][0]=='0') return true;
-            if(board.values[0][0]=='0' && board.values[1][1]=='0' && board.values[2][2]=='0') return true;
-            return false;
-        }
+bool checkForWin(int playerSock)
+{
+    if (playerSock == firstPlayer) {
+        if (board.values[0][0] == 'x' && board.values[0][1] == 'x' &&
+            board.values[0][2] == 'x')
+            return true;
+        if (board.values[1][0] == 'x' && board.values[1][1] == 'x' &&
+            board.values[1][2] == 'x')
+            return true;
+        if (board.values[2][0] == 'x' && board.values[2][1] == 'x' &&
+            board.values[2][2] == 'x')
+            return true;
+        if (board.values[0][0] == 'x' && board.values[0][1] == 'x' &&
+            board.values[0][2] == 'x')
+            return true;
+        if (board.values[1][0] == 'x' && board.values[1][1] == 'x' &&
+            board.values[1][2] == 'x')
+            return true;
+        if (board.values[2][0] == 'x' && board.values[2][1] == 'x' &&
+            board.values[2][2] == 'x')
+            return true;
+        if (board.values[0][2] == 'x' && board.values[1][1] == 'x' &&
+            board.values[2][0] == 'x')
+            return true;
+        if (board.values[0][0] == 'x' && board.values[1][1] == 'x' &&
+            board.values[2][2] == 'x')
+            return true;
+        return false;
+    } else {
+        if (board.values[0][0] == '0' && board.values[0][1] == '0' &&
+            board.values[0][2] == '0')
+            return true;
+        if (board.values[1][0] == '0' && board.values[1][1] == '0' &&
+            board.values[1][2] == '0')
+            return true;
+        if (board.values[2][0] == '0' && board.values[2][1] == '0' &&
+            board.values[2][2] == '0')
+            return true;
+        if (board.values[0][0] == '0' && board.values[0][1] == '0' &&
+            board.values[0][2] == '0')
+            return true;
+        if (board.values[1][0] == '0' && board.values[1][1] == '0' &&
+            board.values[1][2] == '0')
+            return true;
+        if (board.values[2][0] == '0' && board.values[2][1] == '0' &&
+            board.values[2][2] == '0')
+            return true;
+        if (board.values[0][2] == '0' && board.values[1][1] == '0' &&
+            board.values[2][0] == '0')
+            return true;
+        if (board.values[0][0] == '0' && board.values[1][1] == '0' &&
+            board.values[2][2] == '0')
+            return true;
+        return false;
     }
-
+}
 
 bool isMakeReserve(char const* buff)
 {
@@ -199,14 +226,11 @@ void clientCycle(int s, int reserveSock)
                 send(s, "FAILED\r\n\r\n", 10, 0);
                 continue;
             }
-            if(checkForWin(s))
-                if(s == firstPlayer)
-                {
+            if (checkForWin(s))
+                if (s == firstPlayer) {
                     send(s, "Win\r\n\r\n", 8, 0);
                     send(secondPlayer, "Lose\r\n\r\n", 9, 0);
-                }
-                else
-                {
+                } else {
                     send(s, "Win\r\n\r\n", 8, 0);
                     send(firstPlayer, "Lose\r\n\r\n", 9, 0);
                 }
@@ -225,7 +249,17 @@ void clientCycle(int s, int reserveSock)
                 printf("Other: %d\n", other);
                 ret = send(other, buff, ret, 0);
                 printf("Other ret: %d\n", (int)ret);
-                send(s, "OK\r\n\r\n", 6, 0);
+                if (checkForWin(s)) {
+                    if (s == firstPlayer) {
+                        send(s, "OK\r\n1\r\n", 7, 0);
+                        send(secondPlayer, "OK\r\n2\r\n", 7, 0);
+                    } else {
+                        send(firstPlayer, "OK\r\n2\r\n", 7, 0);
+                        send(secondPlayer, "OK\r\n1\r\n", 7, 0);
+                    }
+                } else {
+                    send(s, "OK\r\n\r\n", 6, 0);
+                }
             }
 
             firstStep = !firstStep;
