@@ -1,15 +1,15 @@
 #include <netinet/in.h>
+#include <netinet/tcp.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <chrono>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <optional>
-#include <netinet/tcp.h>
 #include <string>
 #include <thread>
-#include <chrono>
 
 #include "net.h"
 
@@ -185,6 +185,8 @@ int start(int argc, char** argv)
         scanf("%d %d", &row, &col);
         if (row < 0 || row > 2 || col < 0 || col > 2)
             continue;
+        if (board.values[row][col] != '_')
+            continue;
 
         printf("Input\n");
         auto d = "STEP\r\n" + std::to_string(row) + " " +
@@ -206,7 +208,7 @@ int start(int argc, char** argv)
             printf("Swap to reserve\n");
             swapToReserve(*reserveAddr, argv[1], s);
             printf("Send data\n");
-            std::this_thread::sleep_for(std::chrono::microseconds (500));
+            std::this_thread::sleep_for(std::chrono::microseconds(500));
             send(s, d.c_str(), d.size(), 0);
             printf("Recover answer from reserve\n");
             recv(s, buffer, std::size(buffer), 0);
