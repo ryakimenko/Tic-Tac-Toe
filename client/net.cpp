@@ -161,8 +161,6 @@ int start(int argc, char** argv)
     printf("Get reserve\n");
 
     while (true) {
-        int row, col;
-
         if (!isFirst) {
             auto ret = recv(s, buffer, std::size(buffer), 0);
             if (ret <= 0) {
@@ -182,11 +180,16 @@ int start(int argc, char** argv)
             printBoard();
         }
 
-        scanf("%d %d", &row, &col);
-        if (row < 0 || row > 2 || col < 0 || col > 2)
-            continue;
-        if (board.values[row][col] != '_')
-            continue;
+        int row = -1, col = -1;
+
+        while (true) {
+            scanf("%d %d", &row, &col);
+            if (row < 0 || row > 2 || col < 0 || col > 2)
+                continue;
+            if (board.values[row][col] != '_')
+                continue;
+            break;
+        }
 
         printf("Input\n");
         auto d = "STEP\r\n" + std::to_string(row) + " " +
@@ -208,7 +211,7 @@ int start(int argc, char** argv)
             printf("Swap to reserve\n");
             swapToReserve(*reserveAddr, argv[1], s);
             printf("Send data\n");
-            std::this_thread::sleep_for(std::chrono::microseconds(500));
+            std::this_thread::sleep_for(std::chrono::microseconds(2000));
             send(s, d.c_str(), d.size(), 0);
             printf("Recover answer from reserve\n");
             recv(s, buffer, std::size(buffer), 0);

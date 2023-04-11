@@ -215,14 +215,25 @@ void clientCycle(int s, int reserveSock)
             }
         } else {
             printf("Reserve sock: %d\n", reserveSock);
-            if (s == firstPlayer && firstStep &&
+            printf(
+                "Make step: %d-%d, %d, %d %d %d %d %c\n",
+                step->row,
+                step->col,
+                firstStep,
+                reserveSock,
+                firstPlayer,
+                secondPlayer,
+                s,
+                board.values[step->row][step->col]);
+            if ((s == firstPlayer || firstPlayer < 0) && firstStep &&
                 board.values[step->row][step->col] == '_') {
                 board.values[step->row][step->col] = 'x';
             } else if (
-                s == secondPlayer && !firstStep &&
+                (s == secondPlayer || firstPlayer < 0) && !firstStep &&
                 board.values[step->row][step->col] == '_') {
                 board.values[step->row][step->col] = 'o';
             } else {
+                printf("Wrong step\n");
                 send(s, "FAILED\r\n\r\n", 10, 0);
                 continue;
             }
@@ -261,8 +272,8 @@ void clientCycle(int s, int reserveSock)
                     send(s, "OK\r\n\r\n", 6, 0);
                 }
             }
-
             firstStep = !firstStep;
+            printf("First step swap: %d\n", firstStep);
         }
     }
 }
