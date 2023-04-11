@@ -70,32 +70,33 @@ bool checkForWin(int playerSock)
             return true;
         return false;
     } else {
-        if (board.values[0][0] == '0' && board.values[0][1] == '0' &&
-            board.values[0][2] == '0')
+        if (board.values[0][0] == 'o' && board.values[0][1] == 'o' &&
+            board.values[0][2] == 'o')
             return true;
-        if (board.values[1][0] == '0' && board.values[1][1] == '0' &&
-            board.values[1][2] == '0')
+        if (board.values[1][0] == 'o' && board.values[1][1] == 'o' &&
+            board.values[1][2] == 'o')
             return true;
-        if (board.values[2][0] == '0' && board.values[2][1] == '0' &&
-            board.values[2][2] == '0')
+        if (board.values[2][0] == 'o' && board.values[2][1] == 'o' &&
+            board.values[2][2] == 'o')
             return true;
-        if (board.values[0][0] == '0' && board.values[0][1] == '0' &&
-            board.values[0][2] == '0')
+        if (board.values[0][0] == 'o' && board.values[0][1] == 'o' &&
+            board.values[0][2] == 'o')
             return true;
-        if (board.values[1][0] == '0' && board.values[1][1] == '0' &&
-            board.values[1][2] == '0')
+        if (board.values[1][0] == 'o' && board.values[1][1] == 'o' &&
+            board.values[1][2] == 'o')
             return true;
-        if (board.values[2][0] == '0' && board.values[2][1] == '0' &&
-            board.values[2][2] == '0')
+        if (board.values[2][0] == 'o' && board.values[2][1] == 'o' &&
+            board.values[2][2] == 'o')
             return true;
-        if (board.values[0][2] == '0' && board.values[1][1] == '0' &&
-            board.values[2][0] == '0')
+        if (board.values[0][2] == 'o' && board.values[1][1] == 'o' &&
+            board.values[2][0] == 'o')
             return true;
-        if (board.values[0][0] == '0' && board.values[1][1] == '0' &&
-            board.values[2][2] == '0')
+        if (board.values[0][0] == 'o' && board.values[1][1] == 'o' &&
+            board.values[2][2] == 'o')
             return true;
         return false;
     }
+}
 }
 
 bool isMakeReserve(char const* buff)
